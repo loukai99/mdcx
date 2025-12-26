@@ -301,14 +301,6 @@ async def write_nfo(file_info: FileInfo, data: CrawlersResult, nfo_file: Path, o
         if trailer and NfoInclude.TRAILER in nfo_include_new:
             print("  <trailer>" + trailer + "</trailer>", file=code)
 
-        # external id
-        for site, u in data.external_ids.items():
-            if u:
-                print(f"  <{site}id>{u}</{site}id>", file=code)
-        # 没有时使用搜索关键词填充 javdbsearchid # todo 允许配置其他网站的后备字段, 允许控制是否输出该字段
-        if not data.external_ids.get(Website.JAVDB):
-            print(f"  <javdbsearchid>{number}</javdbsearchid>", file=code)
-
         print("</movie>", file=code)
 
         async with aiofiles.open(nfo_file, "w", encoding="UTF-8") as f:
